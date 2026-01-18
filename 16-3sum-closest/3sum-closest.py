@@ -2,19 +2,25 @@ class Solution:
     def threeSumClosest(self, nums: List[int], target: int) -> int:
         nums.sort()
         closest_sum = nums[0] + nums[1] + nums[2]
-        if closest_sum == target:
-            return target
+
         for i in range(len(nums) - 2):
-            k = target - nums[i]
-            j, n = i + 1, len(nums) - 1
-            while(j != n):
-                cur_result = nums[j] + nums[n]
-                if cur_result == k:
+            if i > 0 and nums[i] == nums[i-1]:
+                continue
+                
+            left, right = i + 1, len(nums) - 1
+
+            while left < right:
+                cur_sum = nums[i] + nums[left] + nums[right]
+
+                if cur_sum == target:
                     return target
-                if abs(cur_result - k) < abs(closest_sum - target):
-                    closest_sum = nums[i] + nums[j] + nums[n]
-                if cur_result < k:
-                    j += 1
+
+                if abs(target - cur_sum) < abs(closest_sum - target):
+                    closest_sum = cur_sum
+
+                if cur_sum < target:
+                    left += 1
                 else:
-                    n -= 1
+                    right -= 1
+
         return closest_sum
